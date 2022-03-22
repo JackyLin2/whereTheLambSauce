@@ -14,11 +14,17 @@ useEffect(() => {
 
 
     const popularDemand = async () => {
+      const checkLocalStorage = localStorage.getItem("popular");
 
+
+      if(checkLocalStorage){
+        setPopular(JSON.parse(checkLocalStorage))
+      }else{
         const api = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&number=9`) 
         const data = await api.json();
+        localStorage.setItem("popular", JSON.stringify(data.recipes));
         setPopular(data.recipes)
-
+      }
     }
 
 
@@ -63,29 +69,11 @@ const Card = styled.div`
 
   img{
     border-radius: 2rem;
-    position: absolute;
-    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
   }
 
-  p{
-    position: absolute;
-    z-index: 10;
-    left: 50%;
-    bottom: 0%;
-    transform: translate(-50%, 0%);
-    color: white;
-    width: 100%;
-    text-align: center;
-    font-weight: 600;
-    font-size: 1rem;
-    height: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+ 
 `;
 
 
